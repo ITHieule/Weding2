@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Phát nhạc khi người dùng tương tác (click mở cửa)
         bgMusic.play().then(() => {
-            musicControl.classList.add('show'); // Hiện nút đĩa nhạc quay
+            musicControl.classList.remove('paused'); // Bắt đầu xoay đĩa nhạc
         }).catch(err => console.log("Lỗi phát nhạc:", err));
 
         // Hiện nội dung chính từ từ trồi lên

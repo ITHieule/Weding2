@@ -399,17 +399,9 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 10000; /* Cao hơn door-overlay (9999) để bấm được ngay từ đầu */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     animation: spin 4s linear infinite;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s;
-}
-
-.music-control.show {
-    opacity: 1;
-    visibility: visible;
 }
 
 .music-control.paused {
