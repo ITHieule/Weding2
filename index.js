@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Phát nhạc khi người dùng tương tác (click mở cửa)
         bgMusic.play().then(() => {
-            musicControl.classList.remove('paused'); // Bắt đầu xoay đĩa nhạc
+            musicControl.classList.add('show'); // Hiện nút đĩa nhạc quay
         }).catch(err => console.log("Lỗi phát nhạc:", err));
 
         // Hiện nội dung chính từ từ trồi lên
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const calendarDaysContainer = document.getElementById('calendarDays');
     const targetYear = 2026;
     const targetMonth = 10; // Tháng 11 (0-indexed: 10 là tháng 11)
-    const targetDate = 29;
+    const targetDates = [28, 29]; // Các ngày cần tô đỏ
 
     // Tính ngày đầu tiên của tháng và tổng số ngày trong tháng
     const firstDay = new Date(targetYear, targetMonth, 1).getDay(); // 0 = Sunday
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // In các ngày trong tháng
     for (let d = 1; d <= daysInMonth; d++) {
-        if (d === targetDate) {
+        if (targetDates.includes(d)) {
             html += `<span class="heart">${d}</span>`;
         } else {
             html += `<span>${d}</span>`;

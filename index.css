@@ -187,11 +187,14 @@ body {
 
 .family-box {
     flex: 1;
-    text-align: center;
     background: #fff;
     padding: 30px 20px;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
 }
 
 .family-role {
@@ -205,8 +208,30 @@ body {
 .parent-name { margin-bottom: 5px; }
 
 .main-name {
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 2rem;
+}
+
+.profile-img {
+    width: 200px;
+    height: 280px; /* Tỉ lệ hình chữ nhật đứng (chân dung) */
+    object-fit: cover;
+    border-radius: 15px; /* Bo góc mềm mại */
+    margin-top: 20px;
+    border: 6px solid #fff; /* Khung viền trắng tạo cảm giác như ảnh Polaroid/khung tranh */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.profile-img.img-left {
+    align-self: flex-start;
+    transform: rotate(-4deg); /* Nghiêng nhẹ tạo cảm giác ảnh dán tự nhiên */
+    margin-left: 0;
+}
+
+.profile-img.img-right {
+    align-self: flex-end;
+    transform: rotate(4deg);
+    margin-right: 0;
 }
 
 /* Lịch */
@@ -399,9 +424,17 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10000; /* Cao hơn door-overlay (9999) để bấm được ngay từ đầu */
+    z-index: 1000;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     animation: spin 4s linear infinite;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s;
+}
+
+.music-control.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .music-control.paused {
