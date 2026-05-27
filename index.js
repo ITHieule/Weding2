@@ -6,31 +6,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.scrollTo(0, 0);
 
-    // --- 1. Mở Cửa Chữ Hỉ & Phát Nhạc ---
+    // --- 1. Mở Cửa Chữ Hỉ, Phát Video & Phát Nhạc ---
     const doorOverlay = document.getElementById('doorOverlay');
+    const videoContainer = document.getElementById('videoContainer');
+    const weddingVideo = document.getElementById('weddingVideo');
     const bgMusic = document.getElementById('bgMusic');
     const musicControl = document.getElementById('musicControl');
 
     // Khóa cuộn trang khi chưa mở thiệp
     document.body.style.overflow = 'hidden';
 
-    doorOverlay.addEventListener('click', () => {
-        doorOverlay.classList.add('opened');
-        
-        // Phát nhạc khi người dùng tương tác (click mở cửa)
+    // Hàm chuyển cảnh sau khi video kết thúc hoặc bấm bỏ qua
+    let transitionTriggered = false;
+    const revealInvitation = () => {
+        if (transitionTriggered) return;
+        transitionTriggered = true;
+
+        // Dừng video nếu đang chạy
+        weddingVideo.pause();
+
+        // Ẩn màn hình video
+        videoContainer.classList.add('fade-out');
+
+        // Phát nhạc nền
         bgMusic.play().then(() => {
-            musicControl.classList.add('show'); // Hiện nút đĩa nhạc quay
+            musicControl.classList.add('show');
         }).catch(err => console.log("Lỗi phát nhạc:", err));
 
-        // Hiện nội dung chính từ từ trồi lên
+        // Hiện nội dung chính
         document.getElementById('mainContent').classList.add('show-content');
 
-        // Sau khi cửa mở xong (khoảng 1.5s), cho phép cuộn trang
+        // Đợi hiệu ứng ẩn video hoàn tất
         setTimeout(() => {
             document.body.style.overflow = 'auto';
-            doorOverlay.style.display = 'none'; // Xóa khỏi luồng để không block click
+            videoContainer.style.display = 'none';
+        }, 800);
+    };
+
+    // Khi bấm vào cửa
+    doorOverlay.addEventListener('click', () => {
+        // Mở cửa
+        doorOverlay.classList.add('opened');
+
+        // Chờ cửa mở xong (1.5s) rồi hiện video
+        setTimeout(() => {
+            doorOverlay.style.display = 'none';
+            videoContainer.classList.add('active');
+
+            // Tua video về đầu và phát
+            weddingVideo.currentTime = 0;
+            weddingVideo.play().catch(err => {
+                console.log("Không thể tự động phát video:", err);
+            });
         }, 1500);
     });
+
+    // Khi video kết thúc → hiện nội dung
+    weddingVideo.addEventListener('ended', revealInvitation);
+
+
 
     // Sự kiện bật/tắt nhạc khi bấm vào icon nhạc
     musicControl.addEventListener('click', () => {

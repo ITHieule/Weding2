@@ -66,34 +66,129 @@ body {
     pointer-events: auto; /* Cửa vẫn nhận click */
 }
 
+.door-left {
+    border-right: 2px solid var(--gold);
+}
+
 .door-right {
-    /* Tạo lỗ hổng hình bán nguyệt khớp với chữ Hỉ tròn */
+    border-left: 2px solid var(--gold);
+    /* Tạo lỗ hổng hình bán nguyệt khớp với huy hiệu tròn */
     -webkit-mask-image: radial-gradient(circle at 0% 50%, transparent calc(var(--hi-size) / 2), black calc(var(--hi-size) / 2 + 1px));
     mask-image: radial-gradient(circle at 0% 50%, transparent calc(var(--hi-size) / 2), black calc(var(--hi-size) / 2 + 1px));
 }
 
-.hi-css {
+.wedding-badge {
     position: absolute;
-    right: calc(var(--hi-size) / -2); /* Đẩy lồi sang phải đúng một nửa */
+    right: calc(var(--hi-size) / -2);
     top: 50%;
     transform: translateY(-50%);
     width: var(--hi-size);
     height: var(--hi-size);
     box-sizing: border-box;
-    border-radius: 50%; /* Bo tròn chữ Hỉ */
-    font-size: calc(var(--hi-size) * 0.7); /* Kích thước chữ bên trong */
-    color: #e60000; /* Chữ màu đỏ */
-    background-color: #fff; /* Nền trắng */
-    border: calc(var(--hi-size) * 0.04) solid #e60000; /* Viền đỏ giống hình */
-    font-family: "Microsoft YaHei", "SimHei", sans-serif; /* Font không chân để chữ Hỉ vuông vức */
-    font-weight: 900;
-    line-height: 1;
+    border-radius: 50%;
+    background-color: #fffdf8;
+    border: 5px double var(--gold);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.65), inset 0 0 15px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    user-select: none;
+    overflow: hidden;
     z-index: 10;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.wedding-badge img {
+    width: 93%;
+    height: 93%;
+    object-fit: contain;
+    border-radius: 50%;
+    transition: transform 0.5s ease;
+}
+
+.door-overlay:not(.opened):hover .wedding-badge {
+    transform: translateY(-50%) scale(1.08);
+    box-shadow: 0 0 35px rgba(212, 175, 55, 0.95), inset 0 0 20px rgba(0,0,0,0.1);
+}
+
+.door-overlay:not(.opened):hover .wedding-badge img {
+    transform: rotate(5deg);
+}
+
+/* === MÀN HÌNH VIDEO CHUYỂN CẢNH === */
+.video-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9998;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.video-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.video-container.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    background-color: #000;
+}
+
+/* Khi điện thoại cầm dọc → xoay video nằm ngang để thấy hết nội dung */
+@media (orientation: portrait) {
+    .video-container video {
+        width: 100vh;   /* chiều rộng = chiều cao viewport (sau khi xoay sẽ thành chiều ngang) */
+        height: 100vw;  /* chiều cao = chiều rộng viewport */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        transform-origin: center center;
+        object-fit: contain; /* hiển thị hết nội dung video, không bị cắt */
+    }
+}
+
+.btn-skip {
+    position: absolute;
+    bottom: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    background: rgba(163, 59, 59, 0.85);
+    color: #fffdf8 !important;
+    border: 1px solid var(--gold);
+    font-family: var(--font-text);
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5), 0 0 10px rgba(212, 175, 55, 0.3);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.btn-skip:hover {
+    transform: translateX(-50%) translateY(-2px) scale(1.05);
+    background: var(--text-accent);
+    box-shadow: 0 8px 25px rgba(163, 59, 59, 0.6), 0 0 15px rgba(212, 175, 55, 0.5);
+    border-color: #fff;
 }
 
 /* Khi mở cửa */
